@@ -20,7 +20,7 @@ const userRoutes = require('./routes/users');
 const campgroundsRoutes = require('./routes/campgrounds');
 const reviewsRoutes = require('./routes/reviews');
 
-const dbUrl = process.env.DB_URL || 'mongodb://localhost:27017/yelp-camp';
+const dbUrl =  'mongodb://localhost:27017/yelp-camp'; // process.env.DB_URL ||
 //mongoose connection
 // 'mongodb://localhost:27017/yelp-camp'
 main().catch(err => console.log(err));
@@ -32,7 +32,7 @@ async function main() {
 
 const app = express();
 
-app.engine('ejs', ejsMate)
+app.engine('ejs', ejsMate);
 app.set('view engine', 'ejs');
 app.set('views', path.join(__dirname, 'views'))
 
@@ -112,7 +112,7 @@ app.use(
                 "'self'",
                 "blob:",
                 "data:",
-                "https://res.cloudinary.com/dfak1gwqu/", //SHOULD MATCH YOUR CLOUDINARY ACCOUNT!
+                `https://res.cloudinary.com/${process.env.CLOUDINARY_CLOUD_NAME}/`, //SHOULD MATCH YOUR CLOUDINARY ACCOUNT!
                 "https://images.unsplash.com/"
             ],
             fontSrc    : [ "'self'", ...fontSrcUrls ],

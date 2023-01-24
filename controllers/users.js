@@ -24,7 +24,7 @@ module.exports.register = async (req, res) => {
 }
 
 module.exports.renderLogin = (req, res) => {
-    res.render('users/login')
+    res.render('users/login');
 }
 
 module.exports.login = async (req, res) => {
@@ -42,4 +42,10 @@ module.exports.logout = async (req, res, next) => {
         req.flash('success', 'Goodbye!');
         res.redirect('/campgrounds');
     });
+}
+
+//renders user profile page
+
+module.exports.renderProfile = (req, res) => {
+    res.send('profile owo');
 }

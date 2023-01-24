@@ -23,20 +23,20 @@ module.exports.validateCampground = (req, res, next) => {
     }
 }
 
-module.exports.isAuthor = async (req, res, next) => {
+module.exports.isAuthorized = async (req, res, next) => {
     const { id } = req.params;
     const campground = await Campground.findById(id);
-    if (!campground.author.equals(req.user._id)) {
+    if ( !(campground.author.equals(req.user._id) || req.user.isAdmin)) {
         req.flash('error', 'You do not have permission to do that!');
         return res.redirect(`/campgrounds/${id}`);
     }
     next();
 }
 
-module.exports.isReviewAuthor = async (req, res, next) => {
+module.exports.isReviewAuthorized = async (req, res, next) => {
     const { id, reviewId } = req.params;
     const review = await Review.findById(reviewId);
-    if (!review.author.equals(req.user._id)) {
+    if (!(review.author.equals(req.user._id) || req.user.isAdmin)) {
         req.flash('error', 'You do not have permission to do that!');
         return res.redirect(`/campgrounds/${id}`);
     }
@@ -48,7 +48,7 @@ module.exports.validateReview = (req, res, next) => {
     if (error) {
         const msg = error.details.map(el => el.message).join(',')
         throw new ExpressError(msg, 400)
-    } else {
-        next();
+     } else {
+         next();
     }
-}
+ }
