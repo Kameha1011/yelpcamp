@@ -1,4 +1,6 @@
 const User = require('../models/user');
+const Campground = require('../models/campground');
+const Review = require('../models/review');
 
 module.exports.renderRegister = (req, res) => {
     res.render('users/register');
@@ -45,7 +47,16 @@ module.exports.logout = async (req, res, next) => {
 }
 
 //renders user profile page
-
-module.exports.renderProfile = (req, res) => {
-    res.send('profile owo');
+// quiero consultar los campamentos que matcheen la id del usuario y la id de las reviews del usuario
+module.exports.renderProfile = async (req, res) => {
+    const id = req.params.id;
+    const user = await User.findById(id);
+    const reviews = await Review.find( { author: { $eq: `${id}` } } );
+    let rev = reviews.map(r => r._id);
+    const campgrounds = await Campground.find( { $or: [
+        {reviews: { $in: [...rev] } }, 
+        { author: { $eq: `${id}` } } 
+    ]});
+    console.log(campgrounds)
+    res.render('users/profile', {user, campgrounds, reviews});
 }

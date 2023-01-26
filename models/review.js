@@ -8,6 +8,10 @@ const reviewSchema = new Schema ({
         type: Schema.Types.ObjectId,
         ref: 'User'
     },
+    campground: {
+        type: Schema.Types.ObjectId,
+        ref: 'Campgrounds'
+    },
 });
 const Review = mongoose.model('Review', reviewSchema);
 module.exports = Review;

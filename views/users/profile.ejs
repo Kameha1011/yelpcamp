@@ -1,0 +1,63 @@
+<% layout('layouts/boilerplate')%>
+<link rel="stylesheet" href="/stylesheets/stars.css">
+<header class="banner">
+    <picture>
+        <img src="../images/yogui.jpg" class="img-thumbnail" alt="profile picture">
+    </picture>
+    <div class="user-info d-flex flex-column">
+        <h3><%= user.username %> </h3>
+    </div>
+    
+</header>
+<section class="container-fluid mt-5 d-flex justify-content-between flex-wrap profile-info">
+    <button class="btn btn-info ms-3">Edit Profile</button>
+    <div class="d-flex">
+        <div class="mx-4">
+            <h5>Campgrounds</h5>
+            <p class="text-center"><%= campgrounds.length %> </p>
+        </div>
+        <div>
+            <h5 class="mx-4">Reviews</h5>
+            <p class="text-center"><%= reviews.length %> </p>
+        </div>
+    </div>
+</section>
+<section class="container-fluid mt-5 user-campgrounds">
+    <h2><%=  user.username %>  Campgrounds</h2>
+    <div class=" d-flex flex-wrap mt-5">
+        <% for( let campground of campgrounds) { %>
+            <div class="card mx-2" style="width: 18rem;">
+                <img src=<%= `${campground.images[0].url}` %>  class="card-img-top" alt="Campground Image">
+                <div class="card-body">
+                  <h5 class="card-title"><%= campground.title %> </h5>
+                  <h6 class="card-subtitle mb-2 text-muted"><%= campground.location %> </h6>
+                  <p class="card-text"><%= campground.description %> </p>
+                  <a href=<%= `/campgrounds/${campground._id}` %> class="btn btn-primary">See campground</a>
+                </div>
+            </div>
+        <% } %>
+    </div>
+    
+</section>
+
+<section class="container-fluid mt-5 user-reviews">
+    <h2><%= user.username %>  Reviews </h2>
+    <div class="d-flex flex-wrap mt-5">
+       
+                <% let camps = [] %> 
+                
+      
+           <% for(let review of reviews){ %> 
+            <% camps = campgrounds.filter( camp => camp._id.valueOf() === review.campground.valueOf())%>
+            <div class="card mb-3 review">
+                <div class="card-body">
+                    <h5> <%= camps[0].title %>   </h5> 
+                    <p class="starability-result" data-rating=<%= `${review.rating}` %> >
+                        Rated: <%= review.rating %>  stars
+                    </p>
+                    <p class="card-text">Review: <%= review.body %> </p>
+                </div>
+            </div>
+            <% } %> 
+    </div>
+</section>
